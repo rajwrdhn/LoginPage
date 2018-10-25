@@ -1,5 +1,5 @@
 <?php
-define('dbserver','localhost');
+define('dbserver','127.0.0.1:3306');
 define('dbuser','root');
 define('dbpassword' ,'arar1234');
 define('dbname', 'loginpage');

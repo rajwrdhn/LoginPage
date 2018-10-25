@@ -14,7 +14,7 @@ if(isset($_POST['signup']))
     $msg=mysqli_query($con,"insert into users(fname,lname,email,password,contactno,posting_date) values('$fname','$lname','$email','$enc_password','$contact','$a')");
     if($msg)
     {
-        echo "<script>alert('Register successfully');</script>";
+        echo "<script>alert('Registered successfully');</script>";
     }
 }
 
@@ -111,7 +111,6 @@ if(isset($_POST['send']))
 									<div class="clear"> </div>
 								</div>
 							</form>
-
 						</div>
 					</div>
 				</div>		
