@@ -122,7 +122,7 @@ if(isset($_POST['send']))
 								
 							</div>
 							<form name="login" action="" method="post">
-								<input type="text" class="text" name="uemail" value="" placeholder="Enter your registered email"  ><a href="#" class=" icon email"></a>
+								<input type="text" class="text" name="uemail" value="" placeholder="Enter registered email"  ><a href="#" class=" icon email"></a>
 
 								<input type="password" value="" name="password" placeholder="Enter valid password"><a href="#" class=" icon lock"></a>
 
