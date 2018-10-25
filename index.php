@@ -1,4 +1,74 @@
-<?php
+<?php session_start();
+require_once('dbconnect.php');
+
+//Code for Registration
+if(isset($_POST['signup']))
+{
+    $fname=$_POST['fname'];
+    $lname=$_POST['lname'];
+    $email=$_POST['email'];
+    $password=$_POST['password'];
+    $contact=$_POST['contact'];
+    $enc_password=md5($password);
+    $a=date('Y-m-d');
+    $msg=mysqli_query($con,"insert into users(fname,lname,email,password,contactno,posting_date) values('$fname','$lname','$email','$enc_password','$contact','$a')");
+    if($msg)
+    {
+        echo "<script>alert('Register successfully');</script>";
+    }
+}
+
+// Code for login system
+if(isset($_POST['login']))
+{
+    $password=$_POST['password'];
+    $dec_password=md5($password);
+    $useremail=$_POST['uemail'];
+    $ret= mysqli_query($con,"SELECT * FROM users WHERE email='$useremail' and password='$dec_password'");
+    $num=mysqli_fetch_array($ret);
+    if($num>0)
+    {
+        $extra="welcome.php";
+        $_SESSION['login']=$_POST['uemail'];
+        $_SESSION['id']=$num['id'];
+        $_SESSION['name']=$num['fname'];
+        $host=$_SERVER['HTTP_HOST'];
+        $uri=rtrim(dirname($_SERVER['PHP_SELF']),'/\\');
+        header("location:http://$host$uri/$extra");
+        exit();
+    }
+    else
+    {
+        echo "<script>alert('Invalid username or password');</script>";
+        $extra="index.php";
+        $host  = $_SERVER['HTTP_HOST'];
+        $uri  = rtrim(dirname($_SERVER['PHP_SELF']),'/\\');
+        //header("location:http://$host$uri/$extra");
+        exit();
+    }
+}
+
+//Code for Forgot Password
+
+if(isset($_POST['send']))
+{
+    $row1=mysqli_query($con,"select email,password from users where email='".$_POST['femail']."'");
+    $row2=mysql_fetch_array($row1);
+    if($row2>0)
+    {
+        $email = $row2['email'];
+        $subject = "Information about your password";
+        $password=$row2['password'];
+        $message = "Your password is ".$password;
+        mail($email, $subject, $message, "From: $email");
+        echo  "<script>alert('Your Password has been sent Successfully');</script>";
+    }
+    else
+    {
+        echo "<script>alert('Email not register with us');</script>";
+    }
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -11,12 +81,12 @@
 	 <div class="sap_tabs">	
 			<div id="horizontalTab" style="display: block; width: 100%; margin: 0px;">
 			  <ul class="resp-tabs-list">
-			  	  <li class="resp-tab-item" aria-controls="tab_item-0" role="tab"><div class="top-img"><img src="images/top-note.png" alt=""/></div><span>Register</span>
+			  	  <li class="resp-tab-item" aria-controls="tab_item-0" role="tab"><div class="top-img"></div><span>Register</span>
 			  	  	
 				</li>
-				  <li class="resp-tab-item" aria-controls="tab_item-1" role="tab"><div class="top-img"><img src="images/top-lock.png" alt=""/></div><span>Login</span></li>
-				  <li class="resp-tab-item lost" aria-controls="tab_item-2" role="tab"><div class="top-img"><img src="images/top-key.png" alt=""/></div><span>Forgot Password</span></li>
-				  <div class="clear" /div>
+				  <li class="resp-tab-item" aria-controls="tab_item-1" role="tab"><div class="top-img"></div><span>Login</span></li>
+				  <li class="resp-tab-item lost" aria-controls="tab_item-2" role="tab"><div class="top-img"></div><span>Forgot Password</span></li>
+				  <div class="clear"> </div>
 			  </ul>		
 			  	 
 			<div class="resp-tabs-container">
